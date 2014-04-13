@@ -6,7 +6,14 @@
 #from config import *
 import config
 import mobs
+
+#from Geng import items
+import Geng.items as items
+#import Geng.items
+
 import random
+
+
 
 
 class Levels(object):
@@ -21,13 +28,16 @@ class Levels(object):
 
         #list of mobs and char on current level
         self.mob_list = []
-        """ :type : list [Mob]  """
+        """ :type : list[Mob]  """
         self.char_list = []
+
+        self.items_list = []
+        """ :type : list[items]  """
 
         self.create_array_of_tiles(config.wcoo[0]['w'],
                                    config.wcoo[0]['h'])
 
-        self.CreateRectWall(0, 0, 10, 20)
+        self.create_rect_wall(0, 0, 10, 20)
 
     def print_one_map_char(self, x, y):
         ch = self.tiles[y][x].get_tile_print_char()
@@ -58,8 +68,7 @@ class Levels(object):
             display_strings.append(screen_string)
         return display_strings
 
-
-    def CreateRectWall(self, y0, x0, h, w):
+    def create_rect_wall(self, y0, x0, h, w):
         for x in range(x0, (x0 + w)):
             self.tiles[y0][x].make_wall('#', "WHITE")
             self.tiles[y0 + h - 1][x].make_wall('#', "WHITE")
@@ -68,12 +77,10 @@ class Levels(object):
             self.tiles[y][x0].make_wall("#", "WHITE")
             self.tiles[y][x0 + w - 1].make_wall('#', "WHITE")
 
-
-    def Enter_Mob_in_Tile(self, newcoox, newcooy, mobChar ):
+    def enter_mob_in_tile(self, newcoox, newcooy, mobChar ):
         return self.tiles[newcooy][newcoox].can_i_move()
 
-
-    def create_Mobs(self, num):
+    def create_mobs(self, num):
         """
          Create some mobs on the level
         """
@@ -88,6 +95,18 @@ class Levels(object):
             mob = mobs.Mob("Orc", 'o', "GREEN", x, y)
             self.mob_list.append(mob)
 
+    def create_items_on_level(self, kind, num):
+        if kind == 'weapon':
+            item = items.Weapon()
+            """:type: items.Weapon  """
+            #item = Geng.items.wea
+
+            x = random.randint(1, 9)
+            y = random.randint(1, 9)
+            item.drop(7, 7)
+            self.items_list.append(item)
+
+
     def genarate_map(self):
         pass
 
@@ -95,9 +114,13 @@ class Levels(object):
 class Tiles(object):
     def __init__(self, x, y, print_char, char_color):
 
+
+        #TODO: create item char and color variable!
         self.x = x
         self.y = y
         self.isempty = True
+        self.hasitem = False
+        self.hasmob = False
 
         self.objchar = ' '
         self.objcolor = ''
@@ -122,7 +145,10 @@ class Tiles(object):
             return True
 
     def get_tile_print_char(self):
-        if(self.isempty):
+
+        if self.hasitem is True or self.hasmob is True:
+            return self.objchar
+        elif self.isempty:
             return self.print_char
         else:
             return self.objchar
@@ -133,6 +159,7 @@ class Tiles(object):
         self.ismovable = False
         self.objcolor = color
         self.view_color = self.get_tile_color(color, self.bgcolor)
+        self.hasmob = True
 
     def mob_move_out(self):
         self.objchar = ' '
@@ -140,13 +167,28 @@ class Tiles(object):
         self.view_color = self.get_tile_color(self.char_color, self.bgcolor)
 
         self.isempty = True
+        self.hasmob = False
         self.ismovable = True
+
+    def item_drop_in(self, itemchar, color):
+        self.objchar = itemchar
+        self.objcolor = color
+        self.hasitem = True
+        self.view_color = self.get_tile_color(color, self.bgcolor)
+
+    def item_pick_up(self):
+        self.objchar = ' '
+        self.objcolor = None
+        self.view_color = self.get_tile_color(self.char_color, self.bgcolor)
+        self.hasitem = False #TODO: fix, multiple item pick up
 
     def get_tile_color(self, ojb_color, bg_color):
         """
-
-
         :type ojb_color: str
         :type bg_color: str
         """
         return ojb_color + '_' + bg_color
+
+    def get_tile_info(self):
+        information = 'isempy ' + str(self.isempty) + '; item ' + str(self.hasitem) + '; char ' + str(self.objchar)
+        return information

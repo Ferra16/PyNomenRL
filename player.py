@@ -45,7 +45,7 @@ class Player(creatures.Creatures):
             newcooX -= 1
             newcooY -= 1
 
-        if(self.check_tile(newcooY, newcooX)):
+        if self.check_tile(newcooY, newcooX):
             c.gamelev.tiles[newcooY][newcooX].mob_move_in(self.print_char, self.color)
             c.gamelev.tiles[self.cooY][self.cooX].mob_move_out()
 

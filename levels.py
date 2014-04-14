@@ -106,15 +106,12 @@ class Levels(object):
             item.drop(7, 7)
             self.items_list.append(item)
 
-
     def genarate_map(self):
         pass
 
 
 class Tiles(object):
     def __init__(self, x, y, print_char, char_color):
-
-
         #TODO: create item char and color variable!
         self.x = x
         self.y = y
@@ -122,13 +119,17 @@ class Tiles(object):
         self.hasitem = False
         self.hasmob = False
 
+        #mob and PC display
+        self.mobchar = ' '
+        self.mobcolor = ''
+        #item display
         self.objchar = ' '
         self.objcolor = ''
 
         self.print_char = print_char
-        self.char_color = char_color
+        self.tile_color = char_color
         self.bgcolor = "BLACK"
-        self.view_color = self.char_color + '_' + self.bgcolor
+        self.view_color = self.tile_color + '_' + self.bgcolor
 
         self.ismovable = True
         self.description = "Simple floor"
@@ -146,25 +147,26 @@ class Tiles(object):
 
     def get_tile_print_char(self):
 
-        if self.hasitem is True or self.hasmob is True:
+        if self.hasmob is True:
+            return self.mobchar
+        elif self.hasitem is True:
             return self.objchar
         elif self.isempty:
             return self.print_char
-        else:
-            return self.objchar
+
 
     def mob_move_in(self, mobchar, color):
-        self.objchar = mobchar
+        self.mobchar = mobchar
         self.isempty = False
         self.ismovable = False
-        self.objcolor = color
+        self.mobcolor = color
         self.view_color = self.get_tile_color(color, self.bgcolor)
         self.hasmob = True
 
     def mob_move_out(self):
-        self.objchar = ' '
-        self.objcolor = None
-        self.view_color = self.get_tile_color(self.char_color, self.bgcolor)
+        self.mobchar = ' '
+        self.mobcolor = None
+        self.view_color = self.get_tile_color(self.tile_color, self.bgcolor)
 
         self.isempty = True
         self.hasmob = False
@@ -177,9 +179,9 @@ class Tiles(object):
         self.view_color = self.get_tile_color(color, self.bgcolor)
 
     def item_pick_up(self):
-        self.objchar = ' '
-        self.objcolor = None
-        self.view_color = self.get_tile_color(self.char_color, self.bgcolor)
+        self.mobchar = ' '
+        self.mobcolor = None
+        self.view_color = self.get_tile_color(self.tile_color, self.bgcolor)
         self.hasitem = False #TODO: fix, multiple item pick up
 
     def get_tile_color(self, ojb_color, bg_color):
@@ -190,5 +192,5 @@ class Tiles(object):
         return ojb_color + '_' + bg_color
 
     def get_tile_info(self):
-        information = 'isempy ' + str(self.isempty) + '; item ' + str(self.hasitem) + '; char ' + str(self.objchar)
+        information = 'isempy ' + str(self.isempty) + '; item ' + str(self.hasitem) + '; char ' + str(self.mobchar)
         return information

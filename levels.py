@@ -46,7 +46,8 @@ class Levels(object):
 
     def print_one_color_char(self, y, x):
        # ch = self.tiles[y][x].Get_Tile_Print_Char(), self.tiles[y][x].view_color, self.tiles[y][x].BGcolor
-        ch = self.tiles[y][x].get_tile_print_char(), self.tiles[y][x].view_color
+        #ch = self.tiles[y][x].get_tile_print_char(), self.tiles[y][x].view_color
+        ch = self.tiles[y][x].get_tile_print_char()
         return ch
 
     def create_array_of_tiles(self, maxx, maxy):
@@ -82,7 +83,8 @@ class Levels(object):
 
     def create_mobs(self, num):
         """
-         Create some mobs on the level
+        Create some mobs on the level
+        @type num: Mob number
         """
         for n in xrange(num):
             #x = 0
@@ -146,14 +148,20 @@ class Tiles(object):
             return True
 
     def get_tile_print_char(self):
-
+        color = None
+        char = None
         if self.hasmob is True:
-            return self.mobchar
-        elif self.hasitem is True:
-            return self.objchar
-        elif self.isempty:
-            return self.print_char
+            color = self.mobcolor
+            char = self.mobchar
 
+        elif self.hasitem is True:
+            color = self.objcolor
+            char = self.objchar
+        elif self.isempty:
+            char = self.print_char
+            color = self.tile_color
+        color = self.get_tile_color(color, self.bgcolor)
+        return char, color
 
     def mob_move_in(self, mobchar, color):
         self.mobchar = mobchar
@@ -184,10 +192,14 @@ class Tiles(object):
         self.view_color = self.get_tile_color(self.tile_color, self.bgcolor)
         self.hasitem = False #TODO: fix, multiple item pick up
 
+
     def get_tile_color(self, ojb_color, bg_color):
         """
-        :type ojb_color: str
-        :type bg_color: str
+        Return full tile color (foreground and background)
+        @type self: Tiles
+        @type ojb_color: str
+        @type bg_color: str
+        @rtype: (str, str)
         """
         return ojb_color + '_' + bg_color
 

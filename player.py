@@ -18,6 +18,12 @@ class Player(creatures.Creatures):
 
 
     def Move(self, direction):
+        """
+        Moves player on one tile.
+        @type direction: int
+
+
+        """
         newcooX = self.cooX
         newcooY = self.cooY
 

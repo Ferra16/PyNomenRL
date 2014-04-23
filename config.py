@@ -38,14 +38,15 @@ wcoo.append({'h': 6, 'w': 80, 'x': 0, 'y': 19})
 wcoo.append({'h': 19, 'w': 21, 'x': 59, 'y': 0})
 wcoo.append({'h': 1, 'w': 59, 'x': 0, 'y': 0})
 
-
-
+pl = None
+""" :type : Player """
 
 gamelev = None
 """ :type gamelev: Levels  """
 
 Battle_Log = []
 """ :type : list[str] """
+
 
 def AddBattleLog(text):
     Battle_Log.append(text)

@@ -4,15 +4,15 @@ import config as c
 import creatures
 
 class Player(creatures.Creatures):
-    def __init__(self):
+    def __init__(self, y, x):
         self.NAME = "Player"
         self.print_char = '@'
         self.color = "WHITE"
 
         self.raceName = "Ogroid"
 
-        self.cooX = 5
-        self.cooY = 5
+        self.cooX = x
+        self.cooY = y
 
         c.gamelev.tiles[self.cooY][self.cooX].mob_move_in(self.print_char, self.color)
 

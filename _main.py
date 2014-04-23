@@ -21,25 +21,26 @@ curs_set(0)
 keypad(stdscr, True)
 clear()
 
-#Geng.uni_disp_init()
-
 stopGame = True
 refresh()
 
-#GameScreen = Geng.GameScreen()
 GameScreen = GameScreen()
 
 cf.gamelev = levels.Levels("Dungeon")
 GameScreen.uni_disp_init()
+
+# c.gamelev.genarate_map()
+
 c.AddBattleLog("hello")
 
 GameScreen.Dungeon_Name = config.gamelev.levels_name
 
-_pl = Player()
+#_pl = Player()
 c.gamelev.create_mobs(2)
-c.gamelev.create_items_on_level('weapon', 1)
+#c.gamelev.create_items_on_level('weapon', 1)
+c.gamelev.create_player()
 
-while (stopGame):
+while stopGame:
     #addstr("Ok, start")
 
     #GameScreen.Current_Level_Printed_Map = config.gamelev.print_map()
@@ -52,28 +53,28 @@ while (stopGame):
         stopGame = False
 
     elif k == KEY_LEFT or k == CCHAR('4'):
-        _pl.Move('w')
+        c.pl.Move('w')
 
     elif k == CCHAR('7'):
-        _pl.Move('nw')
+        c.pl.Move('nw')
 
     elif k == KEY_UP or k == CCHAR('8'):
-        _pl.Move('n')
+        c.pl.Move('n')
 
     elif k == CCHAR('9'):
-        _pl.Move('ne')
+        c.pl.Move('ne')
 
     elif k == KEY_RIGHT or k == CCHAR('6'):
-        _pl.Move('e')
+        c.pl.Move('e')
 
     elif k == CCHAR('3'):
-        _pl.Move('se')
+        c.pl.Move('se')
 
     elif k == KEY_DOWN or k == CCHAR('2'):
-        _pl.Move('s')
+        c.pl.Move('s')
 
     elif k == CCHAR('1'):
-        _pl.Move('sw')
+        c.pl.Move('sw')
 
 
 
@@ -83,6 +84,8 @@ while (stopGame):
         stoplook = True
         x = 8
         y = 7
+        curs_set(True)
+
         while stoplook:
             g = getch()
             if g == CCHAR('q'):
@@ -90,13 +93,24 @@ while (stopGame):
 
             elif g == KEY_LEFT or g == CCHAR('4'):
                 x -= 1
-                c.AddBattleLog(c.gamelev.tiles[y][x].get_tile_info())
-            GameScreen.draw_screens()
+            elif g == KEY_RIGHT:
+                x += 1
+            elif g == KEY_UP:
+                y -= 1
+            elif g == KEY_DOWN:
+                y += 1
+
+            c.AddBattleLog(c.gamelev.tiles[y][x].get_tile_info())
+            wclear(c.scrns[c.nos["scr_log"]])
+            wclear(c.scrns[c.nos["scr_map"]])
+            move(y, x)
+            GameScreen.print_BLOG()
+            GameScreen.color__draw_map()
+            wrefresh(c.scrns[c.nos["scr_log"]])
+            wrefresh(c.scrns[c.nos["scr_map"]])
+            #GameScreen.draw_screens()
             #elif g == CCHAR('7'):
             #    _pl.Move('nw')
-
-
-
 
 """
                     elif k == KEY_UP or k == CCHAR('8'):
@@ -118,8 +132,6 @@ while (stopGame):
         _pl.Move('sw')
 
 """
-
-
 
 clear()
 addstr("Stop for now, later we'll see.")

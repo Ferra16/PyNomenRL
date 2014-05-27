@@ -2,14 +2,7 @@ import config
 
 __author__ = 'Twelve'
 
-#from unicurses import *
-
-#from unicurses import *
-#import Geng
-#from Geng import uni_display
-#from Geng import *
 from Geng.uni_display import *
-#import levels
 from player import *
 import config as cf
 
@@ -29,25 +22,15 @@ GameScreen = GameScreen()
 cf.gamelev = levels.Levels("Dungeon")
 GameScreen.uni_disp_init()
 
-# c.gamelev.genarate_map()
-
 c.AddBattleLog("hello")
-
 GameScreen.Dungeon_Name = config.gamelev.levels_name
-
-#_pl = Player()
 c.gamelev.create_mobs(2)
-#c.gamelev.create_items_on_level('weapon', 1)
 c.gamelev.create_player()
 
 while stopGame:
-    #addstr("Ok, start")
-
-    #GameScreen.Current_Level_Printed_Map = config.gamelev.print_map()
 
     GameScreen.draw_screens()
 
-    #lev.create_rooms(0, 0, getmaxyx(config.scrns[0])[1], getmaxyx(config.scrns[0])[0])
     k = getch()
     if k == CCHAR('q'):
         stopGame = False
@@ -75,9 +58,6 @@ while stopGame:
 
     elif k == CCHAR('1'):
         c.pl.Move('sw')
-
-
-
 
     elif k == CCHAR('l'):
 
@@ -108,30 +88,7 @@ while stopGame:
             GameScreen.color__draw_map()
             wrefresh(c.scrns[c.nos["scr_log"]])
             wrefresh(c.scrns[c.nos["scr_map"]])
-            #GameScreen.draw_screens()
-            #elif g == CCHAR('7'):
-            #    _pl.Move('nw')
 
-"""
-                    elif k == KEY_UP or k == CCHAR('8'):
-                    _pl.Move('n')
-
-    elif k == CCHAR('9'):
-        _pl.Move('ne')
-
-    elif k == KEY_RIGHT or k == CCHAR('6'):
-        _pl.Move('e')
-
-    elif k == CCHAR('3'):
-        _pl.Move('se')
-
-    elif k == KEY_DOWN or k == CCHAR('2'):
-        _pl.Move('s')
-
-    elif k == CCHAR('1'):
-        _pl.Move('sw')
-
-"""
 
 clear()
 addstr("Stop for now, later we'll see.")

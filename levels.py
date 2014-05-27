@@ -80,21 +80,12 @@ class Levels(object):
             self.tiles[y][x0].make_wall("#", "WHITE")
             self.tiles[y][x0 + w - 1].make_wall('#', "WHITE")
 
-    #def enter_mob_in_tile(self, newcoox, newcooy, mobChar):
-    #    return self.tiles[newcooy][newcoox].can_i_move()
-
     def create_mobs(self, num):
         """
         Create some mobs on the level
         @type num: Mob number
         """
         for n in xrange(num):
-            #x = 0
-            #y = 0
-            #x = random.randint(1, 9)
-            #y = random.randint(1, 9)
-            #x, y = self.find_empty_tiles()
-
             y, x = self.find_place_for_mob()
             mob = mobs.Mob("Orc", 'o', "GREEN", x, y)
             self.mob_list.append(mob)
@@ -103,13 +94,10 @@ class Levels(object):
         y, x = self.find_place_for_mob()
         c.pl = player.Player(y, x)
 
-
-
     def create_items_on_level(self, kind, num):
         if kind == 'weapon':
             item = items.Weapon()
             """:type: items.Weapon  """
-            #item = Geng.items.wea
 
             x = random.randint(1, 9)
             y = random.randint(1, 9)
@@ -123,8 +111,7 @@ class Levels(object):
 
         x = random.randint(1, width)
         y = random.randint(1, height)
-        # x = random.randint(1, c.wcoo[0]['w']) - 2
-        # y = random.randint(1, c.wcoo[0]['h']) - 2
+
         while self.tiles[y][x].iswall:
             x = random.randint(1, width)
             y = random.randint(1, height)
@@ -146,7 +133,6 @@ class Levels(object):
         @return: None
         """
 
-
         height = c.wcoo[0]['h'] - 2
         width = c.wcoo[0]['w'] - 2
 
@@ -154,21 +140,13 @@ class Levels(object):
         y = random.randint(3, height)
 
         self.tiles[y][x].make_floor('.', "WHITE")
-
-
         x1 = x
         y1 = y
-
         MAX_FLOOR_TILES = 350
         where_to = ['n', 'w', 's', 'e']
 
         tilecount = 0
 
-        #f = open('ww1', 'w')
-        #text = ['x0=', x, 'y0=', y, '\n']
-
-        #f.write(str(text))
-        #f.write('\n')
         while tilecount < MAX_FLOOR_TILES:
             flag_ok = False
             dice = random.choice(where_to)
@@ -187,32 +165,14 @@ class Levels(object):
             elif y1 < 1 or y1 > height:
                 y1 = y
                 flag_ok = True
-            #elif self.tiles[y1][x1].iswall is False:
-             #   flag_ok = True
-                #x1 = x
-                #y1 = y
 
             x = x1
             y = y1
 
-
-            if flag_ok is False and \
-               self.tiles[y][x].iswall is True:
+            if flag_ok is False and self.tiles[y][x].iswall is True:
                 self.tiles[y][x].make_floor('.', "WHITE")
                 tilecount += 1
-            text1 = ['x ', x, 'y ', y, 'x1', x1, 'y1', y1, str(flag_ok), tilecount]
-            #f.write(str(text1))
-            #f.write('\n')
-        #f.close()
-
-
-
-
-
-
-
-
-
+            #text1 = ['x ', x, 'y ', y, 'x1', x1, 'y1', y1, str(flag_ok), tilecount]
 
 
 class Tiles(object):
@@ -223,7 +183,7 @@ class Tiles(object):
         self.isempty = True
         self.hasitem = False
         self.hasmob = False
-        self.iswall = False
+        self.iswall = True
 
         #mob and PC display
         self.mobchar = ' '
